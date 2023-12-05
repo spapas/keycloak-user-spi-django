@@ -19,9 +19,9 @@ public class DjangoUserStorageProviderFactory implements UserStorageProviderFact
     public DjangoUserStorageProvider create(KeycloakSession session, ComponentModel model) {
 
         HikariDataSource ds = new HikariDataSource();
-        String url = System.getenv("REGUSR_JDBC_URL");
+        String url = System.getenv(model.get("jdbcUrlEnv"));
         if(url == null  || url.isEmpty()) {
-            logger.error("REGUSR_JDBC_URL Not found!");
+            logger.error("JDBC URL not found!");
             url = "jdbc:mysql://user:user@127.0.0.1:3306/db";
         }
         ds.setJdbcUrl(url);
@@ -37,7 +37,7 @@ public class DjangoUserStorageProviderFactory implements UserStorageProviderFact
     @Override
     public List<ProviderConfigProperty> getConfigProperties() {
         return ProviderConfigurationBuilder.create()
-                .property("myParam", "My Param", "Some Description", ProviderConfigProperty.STRING_TYPE, "some value", null)
+                .property("jdbcUrlEnv", "Environment var with JDBC URL", "Please enter the name of an env var that contains the JDBC URL of the connection", ProviderConfigProperty.STRING_TYPE, "REGUSR_JDBC_URL", null)
                 .build();
     }
 }
