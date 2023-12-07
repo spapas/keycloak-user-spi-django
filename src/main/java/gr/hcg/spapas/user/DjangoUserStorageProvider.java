@@ -3,6 +3,7 @@ package gr.hcg.spapas.user;
 import org.keycloak.component.ComponentModel;
 import org.keycloak.credential.*;
 import org.keycloak.models.GroupModel;
+import org.keycloak.models.credential.PasswordCredentialModel;
 import org.keycloak.storage.StorageId;
 import org.keycloak.storage.UserStorageProvider;
 import org.keycloak.storage.user.UserLookupProvider;
@@ -21,11 +22,12 @@ import org.keycloak.models.RealmModel;
 import org.keycloak.models.UserModel;
 import org.keycloak.storage.ReadOnlyException;
 import org.keycloak.storage.user.UserQueryProvider;
+import org.keycloak.storage.user.UserRegistrationProvider;
 
 import javax.sql.DataSource;
 
 public class DjangoUserStorageProvider
-        implements UserStorageProvider, UserLookupProvider, CredentialInputValidator, CredentialInputUpdater, UserQueryProvider {
+        implements UserStorageProvider, UserLookupProvider, CredentialInputValidator, CredentialInputUpdater, UserQueryProvider, UserRegistrationProvider {
 
     protected KeycloakSession session;
     protected DjangoRepository dr;
@@ -66,9 +68,16 @@ public class DjangoUserStorageProvider
     @Override
     public UserModel getUserById(RealmModel realm, String id) {
         logger.info("getUserById " + id);
-        StorageId storageId = new StorageId(id);
-        String username = storageId.getExternalId();
-        return getUserByUsername(realm, username);
+        //StorageId storageId = new StorageId(id);
+        //String username = storageId.getExternalId();
+        //return getUserByUsername(realm, username);
+        String externalId = StorageId.externalId(id);
+        logger.info("externalID " + externalId);
+        DjangoUser user = dr.findUserById(externalId);
+        logger.info("externalID user" + user);
+        return new UserAdapter(session, realm, config, user);
+
+
     }
 
     @Override
@@ -84,7 +93,8 @@ public class DjangoUserStorageProvider
 
     @Override
     public boolean supportsCredentialType(String credentialType) {
-        return credentialType.equals(CredentialModel.PASSWORD);
+        //return credentialType.equals(CredentialModel.PASSWORD);
+        return PasswordCredentialModel.TYPE.equals(credentialType);
     }
 
     @Override
@@ -117,7 +127,7 @@ public class DjangoUserStorageProvider
 
     @Override
     public Stream<String> getDisableableCredentialTypesStream(RealmModel realmModel, UserModel userModel) {
-        return null;
+        return Stream.empty();
     }
 
 
@@ -143,4 +153,13 @@ public class DjangoUserStorageProvider
         return null;
     }
 
+    @Override
+    public UserModel addUser(RealmModel realmModel, String s) {
+        return null;
+    }
+
+    @Override
+    public boolean removeUser(RealmModel realmModel, UserModel userModel) {
+        return false;
+    }
 }

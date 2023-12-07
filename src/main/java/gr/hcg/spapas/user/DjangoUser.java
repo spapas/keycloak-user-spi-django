@@ -19,6 +19,7 @@ public class DjangoUser {
     public String fatherName;
     public String motherName;
     public String dob;
+    public String lastLogin;
 
     public String toString() {
         return email+" " + firstName + " " + lastName;

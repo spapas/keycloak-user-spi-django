@@ -22,7 +22,7 @@ class DjangoRepository {
 
     String USER_SQL = "select pn.email as email, pn.password as password, " +
             "pn.first_name as first_name, pn.last_name as last_name, " +
-            "pp.father_name, pp.mother_name, pp.dob " +
+            "pn.date_joined, pn.last_login, pp.father_name, pp.mother_name, pp.dob " +
             "from profiles_nousernameuser pn " +
             "LEFT JOIN account_emailaddress ae on ae.email=pn.email " +
             "LEFT JOIN profiles_profile pp on pp.user_id=pn.id " +
@@ -75,12 +75,16 @@ class DjangoRepository {
             while (rs.next()) {
                 user.email = rs.getString("email");
                 user.username = user.email;
+                user.id = user.email;
+
                 user.firstName = rs.getString("first_name");
                 user.lastName = rs.getString("last_name");
                 user.password = rs.getString("password");
                 user.fatherName = rs.getString("father_name");
                 user.motherName = rs.getString("mother_name");
                 user.dob = rs.getString("dob");
+                user.created = rs.getTimestamp("date_joined").getTime();
+                user.lastLogin = rs.getTimestamp("last_login").toString();
             }
             return user;
 
@@ -122,12 +126,15 @@ class DjangoRepository {
                 DjangoUser user = new DjangoUser();
                 user.email = rs.getString("email");
                 user.username = user.email;
+                user.id = user.email;
                 user.firstName = rs.getString("first_name");
                 user.lastName = rs.getString("last_name");
                 user.password = rs.getString("password");
                 user.fatherName = rs.getString("father_name");
                 user.motherName = rs.getString("mother_name");
                 user.dob = rs.getString("dob");
+                user.created = rs.getTimestamp("date_joined").getTime();
+                user.lastLogin = rs.getTimestamp("last_login").toString();
                 users.add(user);
             }
             return users;
