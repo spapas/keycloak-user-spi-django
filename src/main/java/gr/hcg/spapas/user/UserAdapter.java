@@ -63,6 +63,10 @@ public class UserAdapter extends AbstractUserAdapter {
         attributes.add(UserModel.FIRST_NAME, getFirstName());
         attributes.add(UserModel.LAST_NAME, getLastName());
 
+        attributes.add("FATHER_NAME", user.fatherName);
+        attributes.add("MOTHER_NAME", user.motherName);
+        attributes.add("DOB", user.dob);
+
         return attributes;
     }
 

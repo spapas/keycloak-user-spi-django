@@ -29,9 +29,6 @@ class DjangoRepository {
             con = ds.getConnection();
             stmt = con.prepareStatement("SELECT count(*) from profiles_nousernameuser");
             rs = stmt.executeQuery();
-            System.out.println(con);
-            System.out.println(stmt);
-            System.out.println(rs);
             int len = 0;
             while (rs.next()) {
                 len = rs.getInt(1);
@@ -59,7 +56,8 @@ class DjangoRepository {
         try {
             con = ds.getConnection();
             String SQL =  "select pn.email as email, pn.password as password, " +
-                    "pn.first_name as first_name, pn.last_name as last_name " +
+                    "pn.first_name as first_name, pn.last_name as last_name, " +
+                    "pn.father_name, pn.mother_name, pn.dob" +
                     "from profiles_nousernameuser pn, account_emailaddress ae where pn.email = ? and ae.email=pn.email and ae.verified=1";
             System.out.println(SQL);
             stmt = con.prepareStatement(SQL);
@@ -76,6 +74,9 @@ class DjangoRepository {
                 user.firstName = rs.getString("first_name");
                 user.lastName = rs.getString("last_name");
                 user.password = rs.getString("password");
+                user.fatherName = rs.getString("father_name");
+                user.motherName = rs.getString("mother_name");
+                user.dob = rs.getString("dob");
             }
             return user;
 
@@ -106,7 +107,8 @@ class DjangoRepository {
             String likeQuery = "%"+query+"%";
             con = ds.getConnection();
             String SQL =  "select pn.email as email, pn.password as password, " +
-                    "pn.first_name as first_name, pn.last_name as last_name " +
+                    "pn.first_name as first_name, pn.last_name as last_name, " +
+                    "pn.father_name, pn.mother_name, pn.dob" +
                     "from profiles_nousernameuser pn, account_emailaddress ae where pn.email like ? and ae.email=pn.email and ae.verified=1";
             System.out.println(SQL);
             stmt = con.prepareStatement(SQL);
@@ -123,6 +125,9 @@ class DjangoRepository {
                 user.firstName = rs.getString("first_name");
                 user.lastName = rs.getString("last_name");
                 user.password = rs.getString("password");
+                user.fatherName = rs.getString("father_name");
+                user.motherName = rs.getString("mother_name");
+                user.dob = rs.getString("dob");
                 users.add(user);
             }
             return users;

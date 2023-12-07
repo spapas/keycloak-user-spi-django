@@ -35,25 +35,17 @@ public class DjangoUserStorageProviderFactory implements UserStorageProviderFact
         System.err.println("Create");
         ProviderConfig pc = dataSourcePerInstance.computeIfAbsent(model.getId(),
                 s -> {
-                    System.err.println("Create 2");
                     HikariDataSource ds = new HikariDataSource();
                     String url = "jdbc:mysql://user:user@127.0.0.1:3306/db";
                     System.err.println(0);
                     try {
-                        System.err.println(1);
-                        System.err.println(model.get("jdbcUrlEnv"));
                         url = System.getenv(model.get("jdbcUrlEnv"));
-                        System.err.println(url);
-                        System.err.println(2);
                         if (url == null || url.isEmpty()) {
-                            System.err.println(3);
                             logger.error("JDBC URL not found!");
                         }
                     } catch (Exception e) {
-                        System.err.println(4);
                         e.printStackTrace();
                     }
-                    System.err.println(5);
                     ds.setJdbcUrl(url);
                     ProviderConfig dsConfig = new ProviderConfig();
                     dsConfig.ds = ds;
