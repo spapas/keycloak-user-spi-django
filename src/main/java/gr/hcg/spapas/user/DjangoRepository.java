@@ -20,6 +20,14 @@ class DjangoRepository {
 
     }
 
+    String USER_SQL = "select pn.email as email, pn.password as password, " +
+            "pn.first_name as first_name, pn.last_name as last_name, " +
+            "pp.father_name, pp.mother_name, pp.dob " +
+            "from profiles_nousernameuser pn " +
+            "LEFT JOIN account_emailaddress ae on ae.email=pn.email " +
+            "LEFT JOIN profiles_profile pp on pp.user_id=pn.id " +
+            "where ae.verified=1";
+
 
     int getUsersCount() {
         Connection con = null;
@@ -55,12 +63,8 @@ class DjangoRepository {
         ResultSet rs = null;
         try {
             con = ds.getConnection();
-            String SQL =  "select pn.email as email, pn.password as password, " +
-                    "pn.first_name as first_name, pn.last_name as last_name, " +
-                    "pn.father_name, pn.mother_name, pn.dob" +
-                    "from profiles_nousernameuser pn, account_emailaddress ae where pn.email = ? and ae.email=pn.email and ae.verified=1";
-            System.out.println(SQL);
-            stmt = con.prepareStatement(SQL);
+
+            stmt = con.prepareStatement(USER_SQL+" and pn.email = ?");
             stmt.setString(1, id);
             rs = stmt.executeQuery();
             System.out.println(con);
@@ -106,12 +110,8 @@ class DjangoRepository {
         try {
             String likeQuery = "%"+query+"%";
             con = ds.getConnection();
-            String SQL =  "select pn.email as email, pn.password as password, " +
-                    "pn.first_name as first_name, pn.last_name as last_name, " +
-                    "pn.father_name, pn.mother_name, pn.dob" +
-                    "from profiles_nousernameuser pn, account_emailaddress ae where pn.email like ? and ae.email=pn.email and ae.verified=1";
-            System.out.println(SQL);
-            stmt = con.prepareStatement(SQL);
+
+            stmt = con.prepareStatement(USER_SQL + " and pn.email like ?");
             stmt.setString(1, likeQuery);
             rs = stmt.executeQuery();
             System.out.println(con);
