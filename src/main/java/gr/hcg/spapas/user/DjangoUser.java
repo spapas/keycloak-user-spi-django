@@ -16,6 +16,10 @@ public class DjangoUser {
     public Long created;
     public List<String> roles = null;
     public String password;
+    public String fatherName;
+    public String motherName;
+    public String dob;
+    public String lastLogin;
 
     public String toString() {
         return email+" " + firstName + " " + lastName;

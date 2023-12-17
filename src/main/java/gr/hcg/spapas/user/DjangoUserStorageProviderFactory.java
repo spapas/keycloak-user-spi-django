@@ -30,12 +30,12 @@ public class DjangoUserStorageProviderFactory implements UserStorageProviderFact
     public DjangoUserStorageProvider create(KeycloakSession session, ComponentModel model) {
         DataSource ds = dataSourcePerInstance.computeIfAbsent(model.getId(),
                 s -> {
+
                     HikariDataSource newds = new HikariDataSource();
                     String url = "jdbc:mysql://user:user@127.0.0.1:3306/db";
                     try {
                         url = System.getenv(model.get("jdbcUrlEnv"));
                         if (url == null || url.isEmpty()) {
-
                             logger.error("JDBC URL not found!");
                         }
                     } catch (Exception e) {
@@ -43,6 +43,7 @@ public class DjangoUserStorageProviderFactory implements UserStorageProviderFact
                     }
                     newds.setJdbcUrl(url);
                     return newds;
+
                 }
         );
         return new DjangoUserStorageProvider(session, model, ds);

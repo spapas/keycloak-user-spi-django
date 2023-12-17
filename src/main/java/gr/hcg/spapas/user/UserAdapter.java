@@ -56,12 +56,27 @@ public class UserAdapter extends AbstractUserAdapter {
     }
 
     @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    @Override
+    public boolean isEmailVerified() {
+        return true;
+    }
+
+    @Override
     public Map<String, List<String>> getAttributes() {
         MultivaluedHashMap<String, String> attributes = new MultivaluedHashMap<>();
         attributes.add(UserModel.USERNAME, getUsername());
         attributes.add(UserModel.EMAIL, getEmail());
         attributes.add(UserModel.FIRST_NAME, getFirstName());
         attributes.add(UserModel.LAST_NAME, getLastName());
+
+        attributes.add("fatherName", user.fatherName);
+        attributes.add("motherName", user.motherName);
+        attributes.add("dob", user.dob);
+        attributes.add("lastLogin", user.lastLogin);
 
         return attributes;
     }
