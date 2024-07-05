@@ -5,15 +5,17 @@ import org.keycloak.credential.*;
 import org.keycloak.models.GroupModel;
 import org.keycloak.models.credential.PasswordCredentialModel;
 import org.keycloak.storage.StorageId;
+
 import org.keycloak.storage.UserStorageProvider;
 import org.keycloak.storage.user.UserLookupProvider;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Map;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 
-import org.jboss.logging.Logger;
+
 import org.keycloak.credential.CredentialInput;
 import org.keycloak.credential.CredentialInputUpdater;
 import org.keycloak.credential.CredentialInputValidator;
@@ -35,7 +37,7 @@ public class DjangoUserStorageProvider
     protected DjangoPasswordHasher hasher;
 
 
-    private static final Logger logger = Logger.getLogger(DjangoUserStorageProvider.class);
+    private static final Logger logger = Logger.getLogger("DjangoUserStorageProvider");
 
     public DjangoUserStorageProvider(KeycloakSession session, ComponentModel config, DataSource ds) {
         this.session = session;

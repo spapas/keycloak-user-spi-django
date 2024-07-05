@@ -9,7 +9,7 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <keycloak.version>23.0.0</keycloak.version>
+        <keycloak.version>25.0.0</keycloak.version>
         <maven-compiler.release>11</maven-compiler.release>
         <maven-compiler.version>3.10.1</maven-compiler.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -32,13 +32,19 @@
             <groupId>org.keycloak</groupId>
             <artifactId>keycloak-core</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.keycloak</groupId>
             <artifactId>keycloak-server-spi</artifactId>
         </dependency>
         <dependency>
             <groupId>org.keycloak</groupId>
-            <artifactId>keycloak-model-legacy</artifactId>
+            <artifactId>keycloak-server-spi-private</artifactId>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.keycloak/keycloak-model-storage -->
+        <dependency>
+            <groupId>org.keycloak</groupId>
+            <artifactId>keycloak-model-storage</artifactId>
         </dependency>
 
         <dependency>
@@ -76,10 +82,6 @@
         </dependency>
 
 
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-        </dependency>
     </dependencies>
 
     <build>
